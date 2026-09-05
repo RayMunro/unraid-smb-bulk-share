@@ -1,0 +1,12 @@
+<CommunityApplications>
+  <!-- Required profile -->
+  <Profile>
+SMB Bulk Share Control adds a Settings -> User Utilities page for enabling or disabling SMB export across normal Unraid user shares in bulk, with safety features like security-mode preservation, exclusions for system shares, timestamped backups, restore, and an optional automatic mode. This repository contains the single SMB Bulk Share Control plugin.
+
+Support and bug reports: https://github.com/RayMunro/unraid-smb-bulk-share/issues
+  </Profile>
+  <!-- Optional web page -->
+  <WebPage>https://github.com/RayMunro/unraid-smb-bulk-share</WebPage>
+  <!-- Optional support and donation links -->
+  <Forum>https://github.com/RayMunro/unraid-smb-bulk-share/issues</Forum>
+</CommunityApplications>

@@ -1,0 +1,16 @@
+<Plugin>
+  <!-- Required fields -->
+  <Name>SMB Bulk Share Control</Name>
+  <Overview>Adds a Settings -&gt; User Utilities -&gt; SMB Bulk Share Control page for enabling or disabling SMB export across user shares in bulk. Preserves each share's security mode and existing hidden/Time Machine export modes, excludes appdata/domains/system/isos by default, creates a timestamped backup before every change with restore support, and offers an optional automatic mode that keeps new or disabled shares exported.</Overview>
+  <!-- NOTE: PluginURL must match exactly the URL of the pluginURL attribute in the .plg file -->
+  <PluginURL>https://raw.githubusercontent.com/RayMunro/unraid-smb-bulk-share/main/smb-bulk-share.plg</PluginURL>
+  <PluginAuthor>Ray Munro</PluginAuthor>
+
+  <!-- Optional entries -->
+  <!-- The .plg file already sets the support attribute, so <Support> here is ignored, left out to avoid duplication -->
+  <Project>https://github.com/RayMunro/unraid-smb-bulk-share</Project>
+  <ReadMe>https://raw.githubusercontent.com/RayMunro/unraid-smb-bulk-share/main/README.md</ReadMe>
+  <Category>Tools:</Category>
+  <MinVer>6.12.0</MinVer>
+  <License>MIT</License>
+</Plugin>

@@ -1,0 +1,137 @@
+Menu="Utilities"
+Title="SMB Bulk Share Control"
+Tag="share-alt"
+---
+<?PHP
+$pluginRoot = '/usr/local/emhttp/plugins/smb-bulk-share';
+?>
+
+<style>
+.smbbulk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 20px}
+.smbbulk-card{padding:16px;border:1px solid var(--gray-300,#bbb);border-radius:6px;background:var(--gray-100,rgba(127,127,127,.06))}
+.smbbulk-number{display:block;font-size:2rem;line-height:1.1;font-weight:600}
+.smbbulk-label{opacity:.75}
+.smbbulk-actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.smbbulk-warning{border-left:4px solid #ff8c2f;padding:10px 14px;margin:14px 0;background:rgba(255,140,47,.08)}
+.smbbulk-good{color:#2a9d55}.smbbulk-bad{color:#d14b42}.smbbulk-muted{opacity:.65}
+.smbbulk-table{width:100%;margin-top:18px}.smbbulk-table td,.smbbulk-table th{text-align:left;padding:8px}
+.smbbulk-table th{border-bottom:1px solid var(--gray-400,#999)}
+.smbbulk-status{white-space:pre-wrap;margin-top:12px;min-height:1.5em}
+.smbbulk-settings{max-width:760px}.smbbulk-settings textarea{width:100%;min-height:82px}
+</style>
+
+<div class="smbbulk-grid">
+  <div class="smbbulk-card"><span id="smbbulk-total" class="smbbulk-number">–</span><span class="smbbulk-label">User shares</span></div>
+  <div class="smbbulk-card"><span id="smbbulk-enabled" class="smbbulk-number smbbulk-good">–</span><span class="smbbulk-label">SMB enabled</span></div>
+  <div class="smbbulk-card"><span id="smbbulk-disabled" class="smbbulk-number smbbulk-bad">–</span><span class="smbbulk-label">SMB disabled</span></div>
+  <div class="smbbulk-card"><span id="smbbulk-excluded" class="smbbulk-number">–</span><span class="smbbulk-label">Excluded</span></div>
+</div>
+
+<div id="smbbulk-global-warning" class="smbbulk-warning" style="display:none">
+  The Unraid SMB service is globally disabled. Share settings can still be prepared, but the shares will not appear until SMB is enabled under Settings → SMB.
+</div>
+
+<div class="smbbulk-settings">
+  <h2>Controls</h2>
+  <p>Bulk actions change only the SMB export setting. Public, Secure and Private permissions remain untouched.</p>
+  <label for="smbbulk-exclusions"><strong>Excluded shares</strong> — one per line or separated by commas</label>
+  <textarea id="smbbulk-exclusions"></textarea>
+  <p><label><input type="checkbox" id="smbbulk-auto"> Always enable new or disabled shares (checked every five minutes)</label></p>
+</div>
+
+<div class="smbbulk-actions">
+  <input type="button" id="smbbulk-save" value="Save settings">
+  <input type="button" id="smbbulk-enable" value="Enable SMB on all included shares">
+  <input type="button" id="smbbulk-disable" value="Disable SMB on all included shares">
+  <input type="button" id="smbbulk-restore" value="Restore last change" disabled>
+</div>
+
+<div id="smbbulk-status" class="smbbulk-status"></div>
+
+<h2>Current shares</h2>
+<table class="smbbulk-table">
+  <thead><tr><th>Share</th><th>SMB export</th><th>Security</th><th>Bulk action</th></tr></thead>
+  <tbody id="smbbulk-share-rows"><tr><td colspan="4">Loading…</td></tr></tbody>
+</table>
+
+<script>
+(function(){
+  const endpoint = '/plugins/smb-bulk-share/api.php';
+  let busy = false;
+
+  function html(value) {
+    return $('<div>').text(value == null ? '' : value).html();
+  }
+
+  function setBusy(value) {
+    busy = value;
+    $('#smbbulk-save,#smbbulk-enable,#smbbulk-disable').prop('disabled', value);
+    if (value) $('#smbbulk-restore').prop('disabled', true);
+  }
+
+  function show(message, isError) {
+    $('#smbbulk-status').text(message || '').toggleClass('smbbulk-bad', !!isError).toggleClass('smbbulk-good', !isError && !!message);
+  }
+
+  function render(data) {
+    $('#smbbulk-total').text(data.counts.total);
+    $('#smbbulk-enabled').text(data.counts.enabled);
+    $('#smbbulk-disabled').text(data.counts.disabled);
+    $('#smbbulk-excluded').text(data.counts.excluded);
+    $('#smbbulk-auto').prop('checked', data.settings.auto_enable === 'yes');
+    $('#smbbulk-exclusions').val(data.settings.exclusions.join('\n'));
+    $('#smbbulk-global-warning').toggle(data.smb_global_enabled === false);
+    $('#smbbulk-restore').prop('disabled', busy || !data.can_restore).val(data.can_restore ? 'Restore last change' : 'No change to restore');
+
+    let rows = '';
+    data.shares.forEach(function(share){
+      const enabled = share.export !== '-';
+      rows += '<tr><td>'+html(share.name)+'</td><td class="'+(enabled?'smbbulk-good':'smbbulk-bad')+'">'+html(share.export_label)+'</td><td>'+html(share.security_label)+'</td><td class="'+(share.excluded?'smbbulk-muted':'')+'">'+(share.excluded?'Excluded':'Included')+'</td></tr>';
+    });
+    $('#smbbulk-share-rows').html(rows || '<tr><td colspan="4">No user shares were found.</td></tr>');
+  }
+
+  function refresh(keepMessage) {
+    $.getJSON(endpoint, {action:'status'}).done(function(response){
+      if (!response.ok) { show(response.error || 'Unable to read share status.', true); return; }
+      render(response.data);
+      if (!keepMessage) show('');
+    }).fail(function(xhr){
+      show((xhr.responseJSON && xhr.responseJSON.error) || 'Unable to read share status.', true);
+    });
+  }
+
+  function settingsPayload(action) {
+    return {
+      action: action,
+      auto_enable: $('#smbbulk-auto').prop('checked') ? 'yes' : 'no',
+      exclusions: $('#smbbulk-exclusions').val()
+    };
+  }
+
+  function run(action) {
+    if (busy) return;
+    if (action === 'disable' && !confirm('Disable SMB export on every included share? A backup will be created first.')) return;
+    if (action === 'restore' && !confirm('Restore the SMB export modes from the most recent bulk change?')) return;
+    setBusy(true);
+    show('Working…');
+    const payload = action === 'restore' ? {action:action} : settingsPayload(action);
+    $.post(endpoint, payload, null, 'json').done(function(response){
+      if (!response.ok) { show(response.error || 'The action failed.', true); return; }
+      const changed = response.result && typeof response.result.changed !== 'undefined' ? response.result.changed : null;
+      show(response.message || (changed === null ? 'Done.' : (changed + ' share(s) changed.')));
+    }).fail(function(xhr){
+      show((xhr.responseJSON && xhr.responseJSON.error) || 'The action failed.', true);
+    }).always(function(){
+      setBusy(false);
+      refresh(true);
+    });
+  }
+
+  $('#smbbulk-save').on('click', function(){run('save_settings');});
+  $('#smbbulk-enable').on('click', function(){run('enable');});
+  $('#smbbulk-disable').on('click', function(){run('disable');});
+  $('#smbbulk-restore').on('click', function(){run('restore');});
+  refresh(false);
+})();
+</script>

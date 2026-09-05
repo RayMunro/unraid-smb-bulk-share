@@ -1,0 +1,11 @@
+smb-bulk-share: smb-bulk-share (bulk SMB export control for Unraid)
+smb-bulk-share:
+smb-bulk-share: Adds a User Utilities page that can enable or disable SMB
+smb-bulk-share: export across normal user shares while preserving each share's
+smb-bulk-share: Public, Secure, or Private security mode.
+smb-bulk-share:
+smb-bulk-share: Existing hidden and Time Machine modes are preserved when
+smb-bulk-share: enabling, and timestamped backups are created before changes.
+smb-bulk-share:
+smb-bulk-share: Author: Ray Munro
+smb-bulk-share: License: MIT

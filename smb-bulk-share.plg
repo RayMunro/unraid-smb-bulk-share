@@ -1,0 +1,91 @@
+<?xml version="1.0" standalone="yes"?>
+
+<!DOCTYPE PLUGIN [
+<!ENTITY name "smb-bulk-share">
+<!ENTITY author "Ray Munro">
+<!ENTITY version "2026.09.02a">
+<!ENTITY package "&name;-&version;-noarch-1.txz">
+<!ENTITY github "RayMunro/unraid-smb-bulk-share">
+<!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/main/&name;.plg">
+]>
+
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="Settings/&name;" min="6.12.0"
+        pluginURL="&pluginURL;"
+        support="https://github.com/&github;/issues"
+        project="https://github.com/&github;"
+        readme="https://github.com/&github;#readme">
+
+<CHANGES>
+<![CDATA[
+### 2026.09.02a
+- Replace the unavailable PHP `is_socket()` call with the portable
+  `file_exists()` check used for Unraid's management socket.
+
+### 2026.09.02
+- Initial release.
+- Enable or disable SMB export across included user shares.
+- Preserve Public, Secure and Private security modes.
+- Preserve existing hidden and Time Machine modes when enabling.
+- Configurable exclusions with safe defaults.
+- Optional five-minute automatic enforcement.
+- Timestamped backups and one-click restoration.
+]]>
+</CHANGES>
+
+<FILE Name="/boot/config/plugins/&name;/&package;" Type="base64" Run="upgradepkg --install-new">
+<INLINE>
+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
+</INLINE>
+</FILE>
+
+<FILE Run="/bin/bash">
+<INLINE>
+<![CDATA[
+PLUGIN_BOOT="/boot/config/plugins/smb-bulk-share"
+PLUGIN_WEB="/usr/local/emhttp/plugins/smb-bulk-share"
+
+mkdir -p "$PLUGIN_BOOT/backups"
+chmod 0700 "$PLUGIN_BOOT/backups"
+
+if [[ ! -f "$PLUGIN_BOOT/settings.cfg" ]]; then
+  cp "$PLUGIN_WEB/default.cfg" "$PLUGIN_BOOT/settings.cfg"
+  chmod 0644 "$PLUGIN_BOOT/settings.cfg"
+fi
+
+chmod 0755 "$PLUGIN_WEB/scripts/smb-bulk-share.php"
+cp "$PLUGIN_WEB/smb-bulk-share.cron" "$PLUGIN_BOOT/smb-bulk-share.cron"
+chmod 0644 "$PLUGIN_BOOT/smb-bulk-share.cron"
+/usr/local/sbin/update_cron
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " SMB Bulk Share Control has been installed."
+echo " Open Settings -> User Utilities -> SMB Bulk Share Control."
+echo " Version: 2026.09.02a"
+echo "-----------------------------------------------------------"
+echo ""
+]]>
+</INLINE>
+</FILE>
+
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+<![CDATA[
+PLUGIN_BOOT="/boot/config/plugins/smb-bulk-share"
+
+removepkg smb-bulk-share 2>/dev/null || true
+find "$PLUGIN_BOOT" -maxdepth 1 -type f -name 'smb-bulk-share-*.txz' -delete
+find "$PLUGIN_BOOT" -maxdepth 1 -type f -name '*.cron' -delete
+/usr/local/sbin/update_cron
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " SMB Bulk Share Control has been removed."
+echo " Settings and backups remain in $PLUGIN_BOOT."
+echo "-----------------------------------------------------------"
+echo ""
+]]>
+</INLINE>
+</FILE>
+
+</PLUGIN>
