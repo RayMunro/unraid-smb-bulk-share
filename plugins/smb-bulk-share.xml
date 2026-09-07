@@ -12,5 +12,5 @@
   <ReadMe>https://raw.githubusercontent.com/RayMunro/unraid-smb-bulk-share/main/README.md</ReadMe>
   <Category>Tools:</Category>
   <MinVer>6.12.0</MinVer>
-  <License>MIT</License>
+  <License>GPL-3.0-or-later</License>
 </Plugin>

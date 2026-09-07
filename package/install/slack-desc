@@ -8,4 +8,4 @@ smb-bulk-share: Existing hidden and Time Machine modes are preserved when
 smb-bulk-share: enabling, and timestamped backups are created before changes.
 smb-bulk-share:
 smb-bulk-share: Author: Ray Munro
-smb-bulk-share: License: MIT
+smb-bulk-share: License: GPL-3.0-or-later

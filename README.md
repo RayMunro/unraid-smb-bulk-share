@@ -49,4 +49,4 @@ Existing `Yes (hidden)` and Time Machine modes are not altered.
 
 ## License
 
-MIT License. See `LICENSE`.
+GNU GPLv3. See `LICENSE`.
