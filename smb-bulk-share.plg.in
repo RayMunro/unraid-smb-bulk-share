@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name "smb-bulk-share">
 <!ENTITY author "Ray Munro">
-<!ENTITY version "2026.09.14d">
+<!ENTITY version "2026.09.14e">
 <!ENTITY package "&name;-&version;-noarch-1.txz">
 <!ENTITY github "RayMunro/unraid-smb-bulk-share">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/main/&name;.plg">
@@ -17,6 +17,9 @@
 
 <CHANGES>
 <![CDATA[
+### 2026.09.14e
+- Fix the install-success message printing a hardcoded old version number instead of the version actually installed (the message lived inside a CDATA install script, so the &version; entity was never expanded there - now substituted at build time instead).
+
 ### 2026.09.14d
 - Add a copyright notice to the Settings page, matching the other HackerHog plugins.
 
@@ -75,7 +78,7 @@ echo ""
 echo "-----------------------------------------------------------"
 echo " SMB Bulk Share Control has been installed."
 echo " Open Settings -> User Utilities -> SMB Bulk Share Control."
-echo " Version: 2026.09.14d"
+echo " Version: @VERSION@"
 echo "-----------------------------------------------------------"
 echo ""
 ]]>
