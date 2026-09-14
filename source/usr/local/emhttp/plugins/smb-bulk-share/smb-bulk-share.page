@@ -1,6 +1,8 @@
 Menu="Utilities"
 Title="SMB Bulk Share Control"
 Tag="share-alt"
+Icon="share-alt"
+Type="xmenu"
 ---
 <?PHP
 $pluginRoot = '/usr/local/emhttp/plugins/smb-bulk-share';
