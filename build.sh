@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
-VERSION="2026.09.14c"
+VERSION="2026.09.14d"
 PACKAGE="smb-bulk-share-${VERSION}-noarch-1.txz"
 STAGE="$(mktemp -d)"
 PAYLOAD="$(mktemp)"

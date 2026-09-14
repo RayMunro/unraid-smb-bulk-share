@@ -23,6 +23,7 @@ $pluginRoot = '/usr/local/emhttp/plugins/smb-bulk-share';
 .smbbulk-header{display:flex;align-items:center;gap:14px;margin:0 0 18px}
 .smbbulk-header img{width:52px;height:52px;flex:none}
 .smbbulk-header p{margin:0;opacity:.75}
+.smbbulk-copyright{max-width:760px;margin:28px 0 10px;padding:14px 18px;border:2px solid #d65a00;border-radius:8px;text-align:center;font-size:18px;font-weight:700;letter-spacing:.2px}
 </style>
 
 <div class="smbbulk-header">
@@ -63,6 +64,8 @@ $pluginRoot = '/usr/local/emhttp/plugins/smb-bulk-share';
   <thead><tr><th>Share</th><th>SMB export</th><th>Security</th><th>Bulk action</th></tr></thead>
   <tbody id="smbbulk-share-rows"><tr><td colspan="4">Loading…</td></tr></tbody>
 </table>
+
+<div class="smbbulk-copyright">Copyright &copy; Ray Munro 2026. All rights reserved.</div>
 
 <script>
 (function(){
