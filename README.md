@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="icon.svg" width="160" alt="SMB Bulk Share Control icon" />
+</p>
+
 # SMB Bulk Share Control for Unraid
 
 SMB Bulk Share Control adds a page under **Settings → User Utilities** for
