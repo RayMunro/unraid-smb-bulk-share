@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
-VERSION="2026.09.14d"
+VERSION="2026.09.14e"
 PACKAGE="smb-bulk-share-${VERSION}-noarch-1.txz"
 STAGE="$(mktemp -d)"
 PAYLOAD="$(mktemp)"
@@ -18,13 +18,13 @@ else
   base64 -b 76 -i "$PROJECT_ROOT/$PACKAGE" -o "$PAYLOAD"
 fi
 
-awk -v payload="$PAYLOAD" '
+awk -v payload="$PAYLOAD" -v version="$VERSION" '
   $0 == "@PAYLOAD@" {
     while ((getline line < payload) > 0) print line
     close(payload)
     next
   }
-  { print }
+  { gsub(/@VERSION@/, version); print }
 ' "$PROJECT_ROOT/smb-bulk-share.plg.in" > "$PROJECT_ROOT/smb-bulk-share.plg"
 
 echo "Built $PACKAGE and smb-bulk-share.plg"
