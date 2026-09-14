@@ -1,0 +1,96 @@
+<?xml version="1.0" standalone="yes"?>
+
+<!DOCTYPE PLUGIN [
+<!ENTITY name "smb-bulk-share">
+<!ENTITY author "Ray Munro">
+<!ENTITY version "2026.09.14">
+<!ENTITY package "&name;-&version;-noarch-1.txz">
+<!ENTITY github "RayMunro/unraid-smb-bulk-share">
+<!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/main/&name;.plg">
+]>
+
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="Settings/&name;" min="6.12.0"
+        pluginURL="&pluginURL;"
+        support="https://github.com/&github;/issues"
+        project="https://github.com/&github;"
+        readme="https://github.com/&github;#readme">
+
+<CHANGES>
+<![CDATA[
+### 2026.09.14
+- Add a plugin icon, shown on the Settings page and in Community Applications.
+- Add a reproducible build.sh, matching the rest of the HackerHog plugins.
+
+### 2026.09.02a
+- Replace the unavailable PHP `is_socket()` call with the portable
+  `file_exists()` check used for Unraid's management socket.
+
+### 2026.09.02
+- Initial release.
+- Enable or disable SMB export across included user shares.
+- Preserve Public, Secure and Private security modes.
+- Preserve existing hidden and Time Machine modes when enabling.
+- Configurable exclusions with safe defaults.
+- Optional five-minute automatic enforcement.
+- Timestamped backups and one-click restoration.
+]]>
+</CHANGES>
+
+<FILE Name="/boot/config/plugins/&name;/&package;" Type="base64" Run="upgradepkg --install-new">
+<INLINE>
+@PAYLOAD@
+</INLINE>
+</FILE>
+
+<FILE Run="/bin/bash">
+<INLINE>
+<![CDATA[
+PLUGIN_BOOT="/boot/config/plugins/smb-bulk-share"
+PLUGIN_WEB="/usr/local/emhttp/plugins/smb-bulk-share"
+
+mkdir -p "$PLUGIN_BOOT/backups"
+chmod 0700 "$PLUGIN_BOOT/backups"
+
+if [[ ! -f "$PLUGIN_BOOT/settings.cfg" ]]; then
+  cp "$PLUGIN_WEB/default.cfg" "$PLUGIN_BOOT/settings.cfg"
+  chmod 0644 "$PLUGIN_BOOT/settings.cfg"
+fi
+
+chmod 0755 "$PLUGIN_WEB/scripts/smb-bulk-share.php"
+chmod 0644 "$PLUGIN_WEB/smb-bulk-share.page" "$PLUGIN_WEB/api.php" "$PLUGIN_WEB/icon.svg"
+cp "$PLUGIN_WEB/smb-bulk-share.cron" "$PLUGIN_BOOT/smb-bulk-share.cron"
+chmod 0644 "$PLUGIN_BOOT/smb-bulk-share.cron"
+/usr/local/sbin/update_cron
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " SMB Bulk Share Control has been installed."
+echo " Open Settings -> User Utilities -> SMB Bulk Share Control."
+echo " Version: 2026.09.14"
+echo "-----------------------------------------------------------"
+echo ""
+]]>
+</INLINE>
+</FILE>
+
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+<![CDATA[
+PLUGIN_BOOT="/boot/config/plugins/smb-bulk-share"
+
+removepkg smb-bulk-share 2>/dev/null || true
+find "$PLUGIN_BOOT" -maxdepth 1 -type f -name 'smb-bulk-share-*.txz' -delete
+find "$PLUGIN_BOOT" -maxdepth 1 -type f -name '*.cron' -delete
+/usr/local/sbin/update_cron
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " SMB Bulk Share Control has been removed."
+echo " Settings and backups remain in $PLUGIN_BOOT."
+echo "-----------------------------------------------------------"
+echo ""
+]]>
+</INLINE>
+</FILE>
+
+</PLUGIN>

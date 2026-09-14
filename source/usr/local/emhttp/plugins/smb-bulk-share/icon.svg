@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">SMB Bulk Share Control</title>
+  <desc id="desc">A stack of shared folders with a single toggle switch controlling all of them at once.</desc>
+  <defs>
+    <linearGradient id="folderGradBack" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7fb8e8"/>
+      <stop offset="1" stop-color="#5a9bd6"/>
+    </linearGradient>
+    <linearGradient id="folderGradMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a9be0"/>
+      <stop offset="1" stop-color="#2f7fc2"/>
+    </linearGradient>
+    <linearGradient id="folderGradFront" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1f6fb0"/>
+      <stop offset="1" stop-color="#0e5590"/>
+    </linearGradient>
+  </defs>
+
+  <!-- back folder -->
+  <path d="M96 128c0-11 9-20 20-20h84l24 30h140c11 0 20 9 20 20v150c0 14.4-11.6 26-26 26H122c-14.4 0-26-11.6-26-26V128z"
+        fill="url(#folderGradBack)" opacity="0.55"/>
+
+  <!-- mid folder -->
+  <path d="M80 168c0-11 9-20 20-20h84l24 30h140c11 0 20 9 20 20v150c0 14.4-11.6 26-26 26H106c-14.4 0-26-11.6-26-26V168z"
+        fill="url(#folderGradMid)" opacity="0.8"/>
+
+  <!-- front folder -->
+  <path d="M64 208c0-11 9-20 20-20h84l24 30h140c11 0 20 9 20 20v150c0 14.4-11.6 26-26 26H90c-14.4 0-26-11.6-26-26V208z"
+        fill="url(#folderGradFront)"/>
+  <path d="M64 208c0-11 9-20 20-20h84l24 30H90c-11 0-26 9-26 20v-30z" fill="#08466f"/>
+
+  <!-- shared-folder network arcs on the front folder -->
+  <g stroke="#eaf6ff" stroke-width="10" stroke-linecap="round" fill="none">
+    <path d="M118 330a34 34 0 0 1 60 0"/>
+    <path d="M132 344a16 16 0 0 1 32 0"/>
+  </g>
+  <circle cx="148" cy="356" r="7" fill="#eaf6ff"/>
+
+  <!-- bulk toggle switch badge -->
+  <rect x="248" y="300" width="168" height="88" rx="44" fill="#0b2a44"/>
+  <circle cx="380" cy="344" r="34" fill="#3ddc84"/>
+  <path d="M368 344l9 9 18-20" stroke="#0b2a44" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- small accent dot indicating "all at once" -->
+  <circle cx="284" cy="344" r="10" fill="#5ce0a8"/>
+</svg>
