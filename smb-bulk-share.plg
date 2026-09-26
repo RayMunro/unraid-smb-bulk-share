@@ -15,39 +15,6 @@
         project="https://github.com/&github;"
         readme="https://github.com/&github;#readme">
 
-<CHANGES>
-<![CDATA[
-### 2026.09.14e
-- Fix the install-success message printing a hardcoded old version number instead of the version actually installed (the message lived inside a CDATA install script, so the &version; entity was never expanded there - now substituted at build time instead).
-
-### 2026.09.14d
-- Add a copyright notice to the Settings page, matching the other HackerHog plugins.
-
-### 2026.09.14c
-- Add Icon/Type=xmenu to the page header so Settings -> User Utilities shows a real icon tile instead of the generic page icon.
-
-### 2026.09.14b
-- Register the plugin icon as a native PNG (Unraid's Plugin Manager icon only supports raster images, not the SVG added in 2026.09.14).
-
-### 2026.09.14
-- Add a plugin icon, shown on the Settings page and in Community Applications.
-- Add a reproducible build.sh, matching the rest of the HackerHog plugins.
-
-### 2026.09.02a
-- Replace the unavailable PHP `is_socket()` call with the portable
-  `file_exists()` check used for Unraid's management socket.
-
-### 2026.09.02
-- Initial release.
-- Enable or disable SMB export across included user shares.
-- Preserve Public, Secure and Private security modes.
-- Preserve existing hidden and Time Machine modes when enabling.
-- Configurable exclusions with safe defaults.
-- Optional five-minute automatic enforcement.
-- Timestamped backups and one-click restoration.
-]]>
-</CHANGES>
-
 <FILE Name="/boot/config/plugins/&name;/&package;" Type="base64" Run="upgradepkg --install-new">
 <INLINE>
 /Td6WFoAAATm1rRGAgAhARYAAAB0L+Wj4bH/oSBdABcXwcAN4XBkd86HsTqBaWFfvnO2W0uGwPNY
